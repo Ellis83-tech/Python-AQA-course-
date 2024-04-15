@@ -125,8 +125,8 @@ def set_sensor_name(make_valid_request):
 
 @pytest.fixture
 def set_sensor_reading_interval(make_valid_request):
-    def inner():
-        return make_valid_request(SensorMethod.SET_READING_INTERVAL)
+    def inner(interval: float):
+        return make_valid_request(SensorMethod.SET_READING_INTERVAL, {"interval": interval})
 
     return inner
 
