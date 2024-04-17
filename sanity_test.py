@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 def test_sanity(get_sensor_info, get_sensor_reading, set_sensor_reading_interval, reset_sensor_to_factory, update_sensor_firmware, reboot_sensor):
+=======
+def test_sanity(get_sensor_info, get_sensor_reading):
+>>>>>>> 422a723a0af89dd75819796f3b9300267c10279d
     sensor_info = get_sensor_info()
 
     sensor_name = sensor_info.get("name")
