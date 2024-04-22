@@ -11,6 +11,7 @@ class SensorMethod(Enum):
     RESET_TO_FACTORY = "reset_to_factory"
     UPDATE_FIRMWARE = "update_firmware"
     REBOOT = "reboot"
+    WAIT = "wait"
 
 
 
@@ -151,5 +152,13 @@ def update_sensor_firmware(make_valid_request):
 def reboot_sensor(make_valid_request):
     def inner():
         return make_valid_request(SensorMethod.REBOOT)
+
+    return inner
+
+
+@pytest.fixture
+def wait(make_valid_request):
+    def inner():
+        return make_valid_request(SensorMethod.WAIT)
 
     return inner
