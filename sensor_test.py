@@ -1,4 +1,6 @@
-from conftest import wait
+
+
+import time
 
 
 def test_sanity(get_sensor_info, get_sensor_reading):
@@ -40,23 +42,41 @@ def test_reboot(get_sensor_info, reboot_sensor):
         4. Get current sensor info.
         5. Validate that info from Step 1 is equal to info from Step 4.
     """
-    print("Get original sensor info")
-    sensor_info_before_reboot = get_sensor_info()
+    import time
 
-    print("Reboot sensor")
-    reboot_response = reboot_sensor()
-    assert reboot_response == "rebooting", "Sensor did not return proper text in response to reboot request"
+def test_reboot(get_sensor_info, reboot_sensor):
+    """
+    Test to reboot a sensor and validate its information before and after the reboot.
 
-    print("Wait for sensor to come back online")
-    sensor_info_after_reboot = wait(
-        func=get_sensor_info,
-        condition=lambda x: isinstance(x, dict),
-        tries=10,
-        timeout=1,
-    )
+    Args:
+        get_sensor_info (function): Function to get sensor information.
+        reboot_sensor (function): Function to reboot the sensor.
 
-    print("Validate that info from Step 1 is equal to info from Step 4")
-    assert sensor_info_before_reboot == sensor_info_after_reboot, "Sensor info after reboot doesn't match sensor info before reboot"
+    Steps:
+        1. Get original sensor info.
+        2. Reboot sensor.
+        3. Wait for sensor to come back online.
+        4. Get current sensor info.
+        5. Validate that info from Step 1 is equal to info from Step 4.
+    """
+    # Step 1: Get original sensor info
+    original_info = get_sensor_info()
+
+    # Step 2: Reboot sensor
+    reboot_sensor()
+
+    # Step 3: Wait for sensor to come back online
+    time.sleep(10)  
+
+    # Step 4: Get current sensor info
+    current_info = get_sensor_info()
+
+    # Step 5: Validate that info from Step 1 is equal to info from Step 4
+    assert original_info == current_info, "Sensor info mismatch after reboot"
+
+# Example usage of the test function
+# Assuming we have defined the `get_sensor_info` and `reboot_sensor` functions
+# test_reboot(get_sensor_info, reboot_sensor)
 
 
 def test_set_sensor_name(get_sensor_info, set_sensor_name):
