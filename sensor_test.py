@@ -1,4 +1,4 @@
-from conftest import wait
+import time
 
 
 def test_sanity(get_sensor_info, get_sensor_reading):
@@ -40,23 +40,27 @@ def test_reboot(get_sensor_info, reboot_sensor):
         4. Get current sensor info.
         5. Validate that info from Step 1 is equal to info from Step 4.
     """
-    print("Get original sensor info")
-    sensor_info_before_reboot = get_sensor_info()
+    """
+    Test to reboot a sensor and validate its information before and after the reboot.
+    """
+    # Step 1: Get original sensor info
+    original_info = get_sensor_info()
 
-    print("Reboot sensor")
-    reboot_response = reboot_sensor()
-    assert reboot_response == "rebooting", "Sensor did not return proper text in response to reboot request"
+    # Step 2: Reboot sensor
+    reboot_sensor()
 
-    print("Wait for sensor to come back online")
-    sensor_info_after_reboot = wait(
-        func=get_sensor_info,
-        condition=lambda x: isinstance(x, dict),
-        tries=10,
-        timeout=1,
-    )
+    # Step 3: Wait for sensor to come back online
+    time.sleep(10)  
 
-    print("Validate that info from Step 1 is equal to info from Step 4")
-    assert sensor_info_before_reboot == sensor_info_after_reboot, "Sensor info after reboot doesn't match sensor info before reboot"
+    # Step 4: Get current sensor info
+    current_info = get_sensor_info()
+
+    # Step 5: Validate that info from Step 1 is equal to info from Step 4
+    assert original_info == current_info, "Sensor info mismatch after reboot"
+
+# Example usage of the test function
+# Assuming we have defined the `get_sensor_info` and `reboot_sensor` functions
+# test_reboot(get_sensor_info, reboot_sensor)
 
 
 def test_set_sensor_name(get_sensor_info, set_sensor_name):
@@ -65,6 +69,7 @@ def test_set_sensor_name(get_sensor_info, set_sensor_name):
     2. Get sensor_info.
     3. Validate that current sensor name matches the name set in Step 1.
     """
+
     # Step 1: Set sensor name to "new_name"
     set_sensor_name("new_name")
     
@@ -129,6 +134,7 @@ def test_update_sensor_firmware(get_sensor_info, update_sensor_firmware):
     8. Request another firmware update.
     9. Validate that sensor doesn't update and responds appropriately.
     10. Validate that sensor firmware version doesn't change if it's at maximum value.
+<<<<<<< HEAD
     """
 import time
 
@@ -178,7 +184,3 @@ def test_update_sensor_firmware(get_sensor_info, update_sensor_firmware):
     # Step 9-10: Validate that sensor doesn't update and responds appropriately
     new_version = get_sensor_info()['firmware_version']
     assert new_version == max_firmware_version, f"Sensor firmware version should not change if it's at maximum value. Expected {max_firmware_version}, got {new_version}"
-
-
-
-

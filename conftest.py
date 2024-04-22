@@ -11,7 +11,6 @@ class SensorMethod(Enum):
     RESET_TO_FACTORY = "reset_to_factory"
     UPDATE_FIRMWARE = "update_firmware"
     REBOOT = "reboot"
-    WAIT = "wait"
 
 
 
@@ -126,6 +125,7 @@ def set_sensor_name(make_valid_request):
 
 @pytest.fixture
 def set_sensor_reading_interval(make_valid_request):
+      
     def inner(interval: float):
         return make_valid_request(SensorMethod.SET_READING_INTERVAL, {"interval": interval})
 
@@ -152,13 +152,5 @@ def update_sensor_firmware(make_valid_request):
 def reboot_sensor(make_valid_request):
     def inner():
         return make_valid_request(SensorMethod.REBOOT)
-
-    return inner
-
-
-@pytest.fixture
-def wait(make_valid_request):
-    def inner():
-        return make_valid_request(SensorMethod.WAIT)
 
     return inner
